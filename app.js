@@ -62,14 +62,16 @@ class Requisicao {
 
             if (!this.verificarStatus()) throw new Error("Aguardando inicio dos serviços.");
 
+            this.db = new Core.Libraries.ConexaoBD();
+
             this.dados = Core.helper.url(this.requisicao.url);
 
             this.objetoController = new this.dados.data.controller;
             this.objetoController.requisicao = this.requisicao;
             this.objetoController.resposta = {ok: true};
+            this.objetoController.db = this.db;
 
             // -------------------
-            this.db = new Core.Libraries.ConexaoBD();
             this.processarRequisicao().catch(this.processarErro.bind(this));
         } catch (e) {
             this.processarErro(e);
