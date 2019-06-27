@@ -50,7 +50,7 @@ GravarLog("Controllers carregados com sucesso", "success");
 /***********************************/
 
 class Requisicao {
-    async constructor(requisicao, resposta) {
+    constructor(requisicao, resposta) {
         try {
             this.tempo = {
                 inicio: new Date(),
@@ -70,21 +70,29 @@ class Requisicao {
 
             // -------------------
             this.db = new Core.Libraries.ConexaoBD();
-            await this.db.conectar();
-            await this.db.startTransaction();
-
-            // -------------------
-            await this.objetoController[this.dados.data.funcao]();
-            // -------------------
-
-            await this.db.commit();
-            await this.db.desconectar();
-
-            this.finalizaRequisicao(this.objetoController.resposta);
+            this.processarRequisicao().catch(this.processarErro.bind(this));
         } catch (e) {
-            GravarLog(`Não foi possível executar a controller. [${e.toString()}]`, "error");
-            this.finalizaRequisicao({ok: false});
+            this.processarErro(e);
         }
+    }
+
+    processarErro(e) {
+        GravarLog(`Não foi possível executar a controller. [${e.toString()}]`, "error");
+        this.finalizaRequisicao({ok: false});
+    }
+
+    async processarRequisicao() {
+        await this.db.conectar();
+        await this.db.startTransaction();
+
+        // -------------------
+        await this.objetoController[this.dados.data.funcao]();
+        // -------------------
+
+        await this.db.commit();
+        await this.db.desconectar();
+
+        this.finalizaRequisicao(this.objetoController.resposta);
     }
 
     verificarStatus() {
