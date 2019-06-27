@@ -1,0 +1,19 @@
+{
+  "name": "NerWS",
+  "version": "1.0.0",
+  "description": "Framework para criação de Webservices em NodeJS.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "NervuSW",
+  "license": "ISC",
+  "devDependencies": {
+  },
+  "dependencies": {
+    "colors": "^1.3.3",
+    "mysql": "^2.17.1",
+    "node-fetch": "^2.6.0",
+    "xml2js": "^0.4.19"
+  }
+}

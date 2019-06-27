@@ -1,0 +1,14 @@
+{
+  "database": {
+    "nome": "Conexão Principal MySQL",
+    "motor": "MySQL",
+    "host": "127.0.0.1",
+    "user": "root",
+    "password": "root",
+    "port": 3306,
+    "database": "database",
+    "timeout": 1,
+    "charset": "utf8mb4",
+    "aux": []
+  }
+}
