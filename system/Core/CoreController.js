@@ -6,7 +6,8 @@ class CoreController {
     }
 
     finalizaRequisicao(resposta) {
-        this.resposta = resposta;
+        if (resposta)
+            this.resposta = resposta;
     }
 }
 
