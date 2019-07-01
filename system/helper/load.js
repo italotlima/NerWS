@@ -1,5 +1,5 @@
 const Carregar = tipo => {
-    `Buscando Controllers em [/${tipo}]`.GravarLog();
+    `Buscando [${tipo}] em [/applications/${tipo}]`.GravarLog();
     const arquivos = Core.Libraries.fs.readdirSync(`./application/${tipo}`);
     const carregamento = {};
 

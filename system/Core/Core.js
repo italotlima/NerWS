@@ -24,6 +24,7 @@ global.Core = {
         xmlParseString: require('xml2js').parseString
     },
     controller: [],
+    services: [],
     model: [],
     status: {
         database: true,
