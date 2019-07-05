@@ -38,3 +38,16 @@ global.Core = {
     }
 };
 "Módulos carregados com sucesso".GravarLog("success");
+
+const iniciarServicos = () => {
+    Object.keys(Core.services).map(prop => {
+        const servico = new Core.services[prop]();
+        `Iniciando [${servico.nomeServico}]`.GravarLog();
+        servico.iniciar().catch(e => {
+            `Houve um problema na execução do serviço [${servico.nomeServico}] [${e.toString()}]`.GravarLog("error");
+        });
+        servico.iniciado = true;
+    });
+};
+
+module.exports = {iniciarServicos};

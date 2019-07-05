@@ -1,4 +1,4 @@
-require('./system/Core/Core');
+const {iniciarServicos} = require('./system/Core/Core');
 const {createServer} = require('http');
 const Requisicao = require('./system/Core/MainClassRequisiaco');
 
@@ -8,14 +8,8 @@ Core.controller = Core.helper.carregar("controllers");
 "Controllers carregados com sucesso".GravarLog("success");
 Core.services = Core.helper.carregar("services");
 "Serviços carregados com sucesso".GravarLog("success");
-Object.keys(Core.services).map(prop => {
-    const servico = new Core.services[prop]();
-    `Iniciando [${servico.nomeServico}]`.GravarLog();
-    servico.iniciar().catch(e => {
-        `Houve um problema na execução do serviço [${servico.nomeServico}] [${e.toString()}]`.GravarLog("error");
-    });
-    servico.iniciado = true;
-});
+
+iniciarServicos();
 /***********************************/
 
-createServer((requisicao, resposta) => new Requisicao(requisicao, resposta)).listen(8080);
+createServer((requisicao, resposta) => new Requisicao(requisicao, resposta)).listen(Core.config.server.portaHTTP);

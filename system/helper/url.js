@@ -1,20 +1,19 @@
 const getParametros = url => {
     const getParams = () => {
-        const params = {};
+        const parametros = {};
         try {
             url.split("?")[1].split("&").map(prop => {
                 const dados = prop.split("=");
-                params[dados[0]] = dados[1];
+                parametros[dados[0]] = dados[1];
             });
         } catch (e) {
-
         }
-        return params;
+        return parametros;
     };
 
     const requisicao = {
         data: {
-            params: getParams(),
+            parametros: getParams(),
             funcao: "index",
             controller: [],
             requisicao: url

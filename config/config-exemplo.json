@@ -10,5 +10,8 @@
     "timeout": 1,
     "charset": "utf8mb4",
     "aux": []
+  },
+  "server": {
+    "portaHTTP": 8080
   }
 }

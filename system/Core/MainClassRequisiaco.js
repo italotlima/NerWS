@@ -17,6 +17,7 @@ class Requisicao {
 
             this.objetoController = new this.dados.data.controller;
             this.objetoController.requisicao = this.requisicao;
+            this.objetoController.input.get = this.dados.data.parametros;
             this.objetoController.resposta = {ok: true};
             this.objetoController.db = this.db;
 
