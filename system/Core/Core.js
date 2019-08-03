@@ -15,6 +15,7 @@ String.prototype.GravarLog = function (tipo = "info") {
 };
 
 "Carregando Módulos".GravarLog();
+global.CoreController = require("../../system/Core/CoreController");
 global.Core = {
     Libraries: {
         ConexaoBD: require("../../application/DAO/ConexaoBD"),
@@ -34,7 +35,7 @@ global.Core = {
     utils: {},
     helper: {
         carregar: require("../../system/helper/load"),
-        url: require("../../system/helper/url"),
+        requisicao: require("../../system/helper/requisicao"),
     }
 };
 "Módulos carregados com sucesso".GravarLog("success");

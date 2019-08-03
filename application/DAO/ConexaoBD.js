@@ -4,10 +4,11 @@ const config = require("../../config/config");
 class ConexaoBD {
     constructor() {
         this.config = config.database;
-        this.db = mysql.createConnection(this.config);
+        this.db = null;
     }
 
     conectar() {
+        this.db = mysql.createConnection(this.config);
         return new Promise((resolve, reject) => {
             this.db.connect(err => {
                 if (err) {

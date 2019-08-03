@@ -1,4 +1,4 @@
-const getParametros = url => {
+exports.getParametros = url => {
     const getParams = () => {
         const parametros = {};
         try {
@@ -34,4 +34,24 @@ const getParametros = url => {
     return requisicao;
 };
 
-module.exports = getParametros;
+exports.getBodyRequisicao = requisicao => {
+    return new Promise((resolve, reject) => {
+        let body = "";
+        if (requisicao.method === "POST") {
+            requisicao.on('data', chunk => {
+                body += chunk.toString();
+            });
+            requisicao.on('end', () => {
+                try {
+                    body = JSON.parse(body);
+                } catch (e) {
+                    "Não foi possível converter JSON".GravarLog("warning");
+                    reject(e);
+                }
+                resolve(body);
+            });
+        } else
+            resolve(body);
+    });
+
+};

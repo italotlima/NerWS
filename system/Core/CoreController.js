@@ -4,6 +4,7 @@ class CoreController {
         this.resposta = null;
         this.db = null;
         this.input = {get: {}, post: {}};
+        this.headerResposta = {};
     }
 
     finalizaRequisicao(resposta) {

@@ -6,6 +6,8 @@ class Requisicao {
                 final: null
             };
             this.core = Core;
+            this.codigoResposta = 200;
+            this.headerResposta = {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"};
             this.requisicao = requisicao;
             this.resposta = resposta;
 
@@ -13,12 +15,16 @@ class Requisicao {
 
             this.db = new this.core.Libraries.ConexaoBD();
 
-            this.dados = this.core.helper.url(this.requisicao.url);
+            this.dados = this.core.helper.requisicao.getParametros(this.requisicao.url);
 
             this.objetoController = new this.dados.data.controller;
             this.objetoController.requisicao = this.requisicao;
+
             this.objetoController.input.get = this.dados.data.parametros;
+            this.objetoController.input.postPromise = this.core.helper.requisicao.getBodyRequisicao(requisicao);
+
             this.objetoController.resposta = {ok: true};
+            this.objetoController.headerResposta = this.headerResposta;
             this.objetoController.db = this.db;
 
             // -------------------
@@ -37,6 +43,8 @@ class Requisicao {
         await this.db.conectar();
         await this.db.startTransaction();
 
+        // Aguardando dados POST
+        this.objetoController.input.post = await this.objetoController.input.postPromise;
         // -------------------
         await this.objetoController[this.dados.data.funcao]();
         // -------------------
@@ -44,7 +52,7 @@ class Requisicao {
         await this.db.commit();
         await this.db.desconectar();
 
-        this.finalizaRequisicao(this.objetoController.resposta);
+        this.finalizaRequisicao(this.objetoController.resposta, this.objetoController.headerResposta);
     }
 
     verificarStatus() {
@@ -58,7 +66,7 @@ class Requisicao {
         return true;
     }
 
-    finalizaRequisicao(resposta) {
+    finalizaRequisicao(resposta, headerResposta) {
         this.tempo.final = new Date();
         const tempoTotalRequisicao = (this.tempo.final - this.tempo.inicio);
         `Requisição finalizada em [${tempoTotalRequisicao / 1000}s]`.GravarLog();
@@ -66,7 +74,7 @@ class Requisicao {
         // Fazer validação parametros
         const {ok} = resposta;
         if ([true, false].indexOf(ok) === -1) resposta.ok = true;
-        this.resposta.writeHead(200, {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"});
+        this.resposta.writeHead(this.codigoResposta, headerResposta);
         this.resposta.end(JSON.stringify(resposta));
     }
 }
