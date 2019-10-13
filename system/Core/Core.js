@@ -1,4 +1,6 @@
+const process = require('process');
 require('colors');
+
 // ------- Helpers provisórios
 const tipos = {
     info: "[i]".blue,
@@ -13,6 +15,8 @@ String.prototype.GravarLog = function (tipo = "info") {
 
     console.log(tipos[tipo], `[${hora}]`, this.toString());
 };
+
+require('./EventosSistema');
 
 "Carregando Módulos".GravarLog();
 global.CoreController = require("../../system/Core/CoreController");
@@ -31,7 +35,6 @@ global.Core = {
         database: true,
         controler: true
     },
-    config: require("../../config/config"),
     utils: {},
     helper: {
         carregar: require("../../system/helper/load"),
@@ -39,6 +42,16 @@ global.Core = {
     }
 };
 "Módulos carregados com sucesso".GravarLog("success");
+
+"Carregando arquivo de configuração".GravarLog();
+try {
+    Core.config = require("../../config/config");
+} catch (e) {
+    "Ocorreu um erro ao carregar o arquivo config/config.json".GravarLog('error');
+    "O serviço será encerrado".GravarLog('error');
+    `Descrição do erro: [${e.toString()}]`.GravarLog('error');
+    process.exit(1);
+}
 
 const iniciarServicos = () => {
     Object.keys(Core.services).map(prop => {
