@@ -2,7 +2,7 @@ const mysql = require('mysql');
 
 class ConexaoBD {
     constructor() {
-        this.config = CoreController.config.database;
+        this.config = Core.config.database;
         this.db = null;
     }
 
