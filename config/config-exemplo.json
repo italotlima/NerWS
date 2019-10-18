@@ -1,5 +1,6 @@
 {
   "database": {
+    "enabled": false,
     "nome": "Conexão Principal MySQL",
     "motor": "MySQL",
     "host": "127.0.0.1",
