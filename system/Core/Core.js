@@ -26,10 +26,12 @@ global.Core = {
         StringBuilder: require("../../application/Utils/StringBuilder"),
         fs: require('fs'),
         fetch: require('node-fetch'),
-        xmlParseString: require('xml2js').parseString
+        xmlParseString: require('xml2js').parseString,
+        mime: require('mime')
     },
     controller: [],
     services: [],
+    assets: [],
     model: [],
     status: {
         database: true,

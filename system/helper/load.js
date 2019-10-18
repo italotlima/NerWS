@@ -1,4 +1,4 @@
-const Carregar = tipo => {
+const Carregar = (tipo, onlyJS = true) => {
     `Buscando [${tipo}] em [/applications/${tipo}]`.GravarLog();
     const arquivos = Core.Libraries.fs.readdirSync(`./application/${tipo}`);
     const carregamento = {};
@@ -11,10 +11,16 @@ const Carregar = tipo => {
         if (Core.Libraries.fs.statSync(path).isFile()) {
             try {
                 if (tipoArquivo === "js") {
-                    `Arquivo carregado [${arquivos[i]}]`.GravarLog("success");
                     carregamento[nomeArquivo] = require(`../.${path}`);
+                    `Arquivo carregado [${arquivos[i]}]`.GravarLog("success");
                 } else {
-                    `Ignorando arquivo [${arquivos[i]}]`.GravarLog("warning");
+                    if (onlyJS)
+                        `Ignorando arquivo [${arquivos[i]}]`.GravarLog("warning");
+                    else {
+                        const {fs, mime} = Core.Libraries;
+                        carregamento[`/${arquivos[i]}`] = {type: mime.getType(path), file: fs.readFileSync(path)};
+                        `Arquivo carregado [${arquivos[i]}]`.GravarLog("success");
+                    }
                 }
             } catch (e) {
                 console.log("Mal configurado", e);

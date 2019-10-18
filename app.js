@@ -8,6 +8,8 @@ Core.controller = Core.helper.carregar("controllers");
 "Controllers carregados com sucesso".GravarLog("success");
 Core.services = Core.helper.carregar("services");
 "Serviços carregados com sucesso".GravarLog("success");
+Core.assets = Core.helper.carregar("assets", false);
+"Assets carregados com sucesso".GravarLog("success");
 
 iniciarServicos();
 /***********************************/

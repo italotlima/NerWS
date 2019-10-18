@@ -17,6 +17,14 @@ class Requisicao {
 
             this.dados = this.core.helper.requisicao.getParametros(this.requisicao.url);
 
+            if (Object.keys(Core.assets).indexOf(this.dados.data.requisicao) > -1) {
+                const asset = Core.assets[this.dados.data.requisicao];
+                this.headerResposta['Content-Type'] = asset.type;
+                this.finalizaRequisicao(asset.file, this.headerResposta, false);
+                return;
+            }
+
+
             this.objetoController = new this.dados.data.controller;
             this.objetoController.requisicao = this.requisicao;
 
@@ -66,16 +74,18 @@ class Requisicao {
         return true;
     }
 
-    finalizaRequisicao(resposta, headerResposta) {
+    finalizaRequisicao(resposta, headerResposta, json = true) {
         this.tempo.final = new Date();
         const tempoTotalRequisicao = (this.tempo.final - this.tempo.inicio);
         `Requisição finalizada em [${tempoTotalRequisicao / 1000}s]`.GravarLog();
 
         // Fazer validação parametros
-        const {ok} = resposta;
-        if ([true, false].indexOf(ok) === -1) resposta.ok = true;
+        if (json) {
+            const {ok} = resposta;
+            if ([true, false].indexOf(ok) === -1) resposta.ok = true;
+        }
         this.resposta.writeHead(this.codigoResposta, headerResposta);
-        this.resposta.end(JSON.stringify(resposta));
+        this.resposta.end(json ? JSON.stringify(resposta) : resposta);
     }
 }
 
