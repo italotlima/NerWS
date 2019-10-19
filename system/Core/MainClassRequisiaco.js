@@ -44,7 +44,7 @@ class Requisicao {
 
     processarErro(e) {
         `Não foi possível executar a controller. [${e.toString()}]`.GravarLog("error");
-        this.finalizaRequisicao({ok: false}, this.objetoController.headerResposta);
+        this.finalizaRequisicao({ok: false}, this.headerResposta);
     }
 
     async processarRequisicao() {
