@@ -24,6 +24,11 @@ class Requisicao {
                 return;
             }
 
+            if (typeof this.dados.data.controller !== "function") {
+                const mensagem = `[${this.dados.data.requisicao}] A rota solicitada não é válida.`;
+                mensagem.GravarLog("error");
+                new ErroUsuario(mensagem);
+            }
 
             this.objetoController = new this.dados.data.controller;
             this.objetoController.requisicao = this.requisicao;
@@ -42,9 +47,22 @@ class Requisicao {
         }
     }
 
-    processarErro(e) {
-        `Não foi possível executar a controller. [${e.toString()}]`.GravarLog("error");
-        this.finalizaRequisicao({ok: false}, this.headerResposta);
+    async processarErro(e) {
+        let {mensagem_usuario, codigo_erro, erros_aplicacao, descricao_usuario} = e;
+        if (!mensagem_usuario) {
+            console.log("===============================================================".red);
+            console.log(e);
+            console.log("===============================================================".red);
+        }
+        await this.db.rollback();
+        await this.db.desconectar();
+        this.finalizaRequisicao({
+            ok: false,
+            mensagem_usuario,
+            codigo_erro,
+            erros_aplicacao,
+            descricao_usuario
+        }, this.headerResposta);
     }
 
     async processarRequisicao() {
@@ -67,9 +85,8 @@ class Requisicao {
         const {status} = this.core;
         const statusSistema = Object.keys(status);
         for (let i = 0; i < statusSistema.length; i++) {
-            if (!status[statusSistema[i]]) {
+            if (!status[statusSistema[i]])
                 return false;
-            }
         }
         return true;
     }
@@ -79,13 +96,14 @@ class Requisicao {
         const tempoTotalRequisicao = (this.tempo.final - this.tempo.inicio);
         `Requisição finalizada em [${tempoTotalRequisicao / 1000}s]`.GravarLog();
 
+        const requisicaoJSON = (headerResposta['Content-Type'] === "application/json");
+
         // Fazer validação parametros
-        if (json) {
-            const {ok} = resposta;
-            if ([true, false].indexOf(ok) === -1) resposta.ok = true;
-        }
+        if (requisicaoJSON)
+            if ([true, false].indexOf(resposta.ok) === -1) resposta.ok = true;
+
         this.resposta.writeHead(this.codigoResposta, headerResposta);
-        this.resposta.end(json ? JSON.stringify(resposta) : resposta);
+        this.resposta.end(requisicaoJSON ? JSON.stringify(resposta) : resposta);
     }
 }
 

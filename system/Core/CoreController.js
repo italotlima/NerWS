@@ -5,6 +5,7 @@ class CoreController {
         this.db = null;
         this.input = {get: {}, post: {}};
         this.headerResposta = {};
+        this.funcoes = new Core.helper.Funcoes();
     }
 
     finalizaRequisicao(resposta) {

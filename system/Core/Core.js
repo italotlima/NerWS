@@ -19,7 +19,7 @@ String.prototype.GravarLog = function (tipo = "info") {
 require('./EventosSistema');
 
 "Carregando Módulos".GravarLog();
-global.CoreController = require("../../system/Core/CoreController");
+global.CoreController = require("../Core/CoreController");
 global.Core = {
     Libraries: {
         ConexaoBD: require("../../application/DAO/ConexaoBD"),
@@ -27,7 +27,21 @@ global.Core = {
         fs: require('fs'),
         fetch: require('node-fetch'),
         xmlParseString: require('xml2js').parseString,
-        mime: require('mime')
+        mime: require('mime'),
+        os: require('os'),
+        zlib: require('zlib'),
+        request: require('request'),
+        xml2json: require('xml2json'),
+        websocket: require('websocket'),
+        http: require('http'),
+        https: require('https'),
+        uuid: require('uuid'),
+        FormData: require('form-data'),
+        useragent: require('useragent'),
+        uag: require('useragent-generator'),
+        axios: require('axios'),
+        nodemailer: require("nodemailer")
+
     },
     controller: [],
     services: [],
@@ -37,10 +51,12 @@ global.Core = {
         database: true,
         controler: true
     },
+    Requisicao: require('../Core/MainClassRequisiaco'),
     utils: {},
     helper: {
-        carregar: require("../../system/helper/load"),
-        requisicao: require("../../system/helper/requisicao"),
+        carregar: require("../helper/load"),
+        requisicao: require("../helper/requisicao"),
+        Funcoes: require("../helper/Funcoes"),
     }
 };
 "Módulos carregados com sucesso".GravarLog("success");
@@ -56,7 +72,12 @@ try {
 }
 
 const iniciarServicos = () => {
+    const execucaoPerpetua = async () => {
+
+    };
+
     Object.keys(Core.services).map(prop => {
+        // Melhorar aqui
         const servico = new Core.services[prop]();
         `Iniciando [${servico.nomeServico}]`.GravarLog();
         servico.iniciar().catch(e => {
@@ -65,5 +86,4 @@ const iniciarServicos = () => {
         servico.iniciado = true;
     });
 };
-
 module.exports = {iniciarServicos};

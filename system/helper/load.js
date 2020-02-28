@@ -23,14 +23,14 @@ const Carregar = (tipo, onlyJS = true) => {
                     }
                 }
             } catch (e) {
-                console.log("Mal configurado", e);
-                // Arquivo mal configurado
+                `Falha ao carregar arquivo [${arquivos[i]}][${e.toString()}]`.GravarLog("error");
             }
         } else {
             `Buscando arquivos na pasta [${nomeArquivo}]`.GravarLog();
             carregamento[nomeArquivo] = Carregar(`${tipo}/${nomeArquivo}`);
         }
     }
+    `${tipo} carregados com sucesso`.GravarLog("success");
     return carregamento;
 };
 

@@ -9,62 +9,50 @@ class ConexaoBD {
     conectar() {
         if (this.config.enabled) {
             this.db = mysql.createConnection(this.config);
-            return new Promise((resolve, reject) => {
-                this.db.connect(err => {
-                    if (err) {
-                        console.log("[x]".red, "Erro ao conectar com o Banco de Dados");
-                        reject(err);
-                    } else resolve();
-                });
-            });
+            return new Promise((resolve, reject) => this.db.connect(err => (err) ? reject(new Error(`Não foi possível se conectar com o Banco de Dados [${err.toString()}]`)) : resolve()));
         }
     }
 
     desconectar() {
-        if (this.config.enabled)
+        if (this.config.enabled && this.db)
             this.db.end();
     }
 
     query(sql, args = null) {
-        if (this.config.enabled) {
-            return new Promise((resolve, reject) => {
-                if (args) this.db.query(sql, args, (err, rows) => err ? reject(err) : resolve(rows));
-                else this.db.query(sql, (err, rows) => err ? reject(err) : resolve(rows));
-            });
-        } else
-            "A conexão com o banco de dados não está ativa.".GravarLog("error");
-
+        if (!this.config.enabled)
+            throw new Error("A conexão com o banco de dados não está ativa.");
+        return new Promise((resolve, reject) => {
+            if (args) this.db.query(sql, args, (err, rows) => err ? reject(err) : resolve(rows));
+            else this.db.query(sql, (err, rows) => err ? reject(err) : resolve(rows));
+        });
     }
 
     queryRow(sql, args = null) {
-        if (this.config.enabled) {
-            return new Promise((resolve, reject) => {
-                if (args) this.db.query(sql, args, (err, rows) => err ? reject(err) : resolve(rows.length ? rows[0] : {}));
-                else this.db.query(sql, (err, rows) => err ? reject(err) : resolve(rows.length ? rows[0] : {}));
-            });
-        } else
-            "A conexão com o banco de dados não está ativa.".GravarLog("error");
+        if (!this.config.enabled)
+            throw new Error("A conexão com o banco de dados não está ativa.");
+        return new Promise((resolve, reject) => {
+            if (args) this.db.query(sql, args, (err, rows) => err ? reject(err) : resolve(rows.length ? rows[0] : {}));
+            else this.db.query(sql, (err, rows) => err ? reject(err) : resolve(rows.length ? rows[0] : {}));
+        });
     }
 
     startTransaction() {
-        if (this.config.enabled) {
-            return new Promise((resolve, reject) => this.db.beginTransaction(err => err ? reject(err) : resolve()));
-        } else
-            "A conexão com o banco de dados não está ativa.".GravarLog("error");
+        if (!this.config.enabled)
+            throw new Error("A conexão com o banco de dados não está ativa.");
+        return new Promise((resolve, reject) => this.db.beginTransaction(err => err ? reject(err) : resolve()));
     }
 
     commit() {
-        if (this.config.enabled) {
-            return new Promise((resolve, reject) => this.db.commit(err => err ? reject(err) : resolve()));
-        } else
-            "A conexão com o banco de dados não está ativa.".GravarLog("error");
+        if (!this.config.enabled)
+            throw new Error("A conexão com o banco de dados não está ativa.");
+        return new Promise((resolve, reject) => this.db.commit(err => err ? reject(err) : resolve()));
     }
 
     rollback() {
-        if (this.config.enabled) {
+        if (!this.config.enabled)
+            throw new Error("A conexão com o banco de dados não está ativa.");
+        if (this.db)
             return new Promise((resolve, reject) => this.db.rollback(err => err ? reject(err) : resolve()));
-        } else
-            "A conexão com o banco de dados não está ativa.".GravarLog("error");
     }
 }
 
