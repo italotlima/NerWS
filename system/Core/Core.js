@@ -41,7 +41,6 @@ global.Core = {
 
     },
     controller: [],
-    services: [],
     assets: [],
     model: [],
     status: {
@@ -67,20 +66,3 @@ try {
     `Descrição do erro: [${e.toString()}]`.GravarLog('error');
     process.exit(1);
 }
-
-const iniciarServicos = () => {
-    const execucaoPerpetua = async () => {
-
-    };
-
-    Object.keys(Core.services).map(prop => {
-        // Melhorar aqui
-        const servico = new Core.services[prop]();
-        `Iniciando [${servico.nomeServico}]`.GravarLog();
-        servico.iniciar().catch(e => {
-            `Houve um problema na execução do serviço [${servico.nomeServico}] [${e.toString()}]`.GravarLog("error");
-        });
-        servico.iniciado = true;
-    });
-};
-module.exports = {iniciarServicos};
