@@ -1,16 +1,18 @@
 {
   "name": "NerWS",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Framework para criação de Webservices em NodeJS.",
   "main": "app.js",
   "scripts": {
-    "start": "concurrently --kill-others \"serve -s upload -l 3500\" \"node app.js\"",
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "NervuSW",
   "license": "ISC",
   "devDependencies": {
-    "concurrently": "^5.0.0"
+    "jtest": "0.0.1",
+    "nodemon": "^2.0.4",
+    "sequelize-cli": "^6.2.0"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -25,13 +27,9 @@
     "nodemailer": "^6.4.3",
     "os": "^0.1.1",
     "request": "^2.88.2",
-    "useragent": "^2.3.0",
-    "useragent-generator": "^1.1.1-amkt-22079-finish.0",
+    "sequelize": "^6.3.4",
     "uuid": "^7.0.1",
     "websocket": "^1.0.31",
-    "xml2js": "^0.4.19",
-    "xml2json": "^0.12.0",
-    "yamlparser": "0.0.2",
-    "zlib": "^1.0.5"
+    "xml2js": "^0.4.19"
   }
 }

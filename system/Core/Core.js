@@ -31,14 +31,11 @@ global.Core = {
         os: require('os'),
         zlib: require('zlib'),
         request: require('request'),
-        xml2json: require('xml2json'),
         websocket: require('websocket'),
         http: require('http'),
         https: require('https'),
         uuid: require('uuid'),
         FormData: require('form-data'),
-        useragent: require('useragent'),
-        uag: require('useragent-generator'),
         axios: require('axios'),
         nodemailer: require("nodemailer")
 
