@@ -5,8 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "predev": "SET NODE_ENV=developing",
-    "dev": "nodemon app.js --ignore __tests__",
+    "dev": "SET NODE_ENV=developing && nodemon app.js --ignore __tests__",
     "pretest": "SET NODE_ENV=test sequelize db:migrate",
     "test": "jest",
     "posttest": "SET NODE_ENV=test sequelize db:migrate:undo:all"
