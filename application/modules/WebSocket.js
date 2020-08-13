@@ -1,9 +1,16 @@
 const {http, websocket, uuid, fs, https} = Core.Libraries;
-const {portaWS, portaWSS} = Core.config.server;
 const {createServer} = http;
 const {server: webSocketServer} = websocket;
 
-const credentials = {key: fs.readFileSync('config/cert.key', 'utf8'), cert: fs.readFileSync('config/cert.crt', 'utf8')};
+Core.config.server.portaWS = process.env.portaWS || 19630;
+Core.config.server.portaWSS = process.env.portaWS || 19631;
+
+const {portaWS, portaWSS} = Core.config.server;
+
+const credentials = {
+  key: fs.readFileSync('config/cert.key', 'utf8'),
+  cert: fs.readFileSync('config/cert.crt', 'utf8')
+};
 
 class WebSocketConexao {
     constructor(requisicao) {

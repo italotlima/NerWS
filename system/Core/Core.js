@@ -60,8 +60,6 @@ global.Core = {
 Core.config = {
   database: require("../../config/database"),
   server: {
-    portaHTTP: process.env.APP_HTTP_PORT || 8181,
-    portaWS: process.env.portaWS || 19630,
-    portaWSS: process.env.portaWSS || 19631
+    portaHTTP: process.env.APP_HTTP_PORT || 8181
   }
 };
