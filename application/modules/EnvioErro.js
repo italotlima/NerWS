@@ -1,5 +1,10 @@
 let processoErroOriginal = Core.Requisicao.prototype.processarErro;
 const {https, FormData, uag} = Core.Libraries;
+
+Core.config.erro = {
+    urlEnvio: ""
+};
+
 const enviarErro = async (nome, email, assunto, mensagem, mensagemWPP) => {
     try {
         `Abrindo novo chamado para [${Core.config.erro.urlEnvio}]`.GravarLog();

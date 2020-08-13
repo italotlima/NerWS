@@ -1,4 +1,4 @@
-const process = require('process');
+require("dotenv").config({path: process.env.NODE_ENV === "test" ? ".env.test" : ".env"});
 require('colors');
 
 // ------- Helpers provisórios
@@ -38,7 +38,6 @@ global.Core = {
         FormData: require('form-data'),
         axios: require('axios'),
         nodemailer: require("nodemailer")
-
     },
     controller: [],
     assets: [],
@@ -58,11 +57,11 @@ global.Core = {
 "Módulos carregados com sucesso".GravarLog("success");
 
 "Carregando arquivo de configuração".GravarLog();
-try {
-    Core.config = require("../../config/config");
-} catch (e) {
-    "Ocorreu um erro ao carregar o arquivo config/config.json".GravarLog('error');
-    "O serviço será encerrado".GravarLog('error');
-    `Descrição do erro: [${e.toString()}]`.GravarLog('error');
-    process.exit(1);
-}
+Core.config = {
+  database: require("../../config/database"),
+  server: {
+    portaHTTP: process.env.APP_HTTP_PORT || 8181,
+    portaWS: process.env.portaWS || 19630,
+    portaWSS: process.env.portaWSS || 19631
+  }
+};

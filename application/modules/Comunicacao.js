@@ -14,6 +14,11 @@ const getMensagemRenderizada = async (mensagem, outros) => {
     return mensagemFinal.toString();
 };
 
+Core.config.comunicacao = {
+  WhatsApp: {token: "", baseURL: "api.macrochat.com.br", versao: "v1"},
+  Email: {email: "", nome: "", host: "", porta: "", senha: ""}
+};
+
 class WhatsApp {
     constructor() {
         this.token = Core.config.comunicacao.WhatsApp.token;
@@ -38,14 +43,14 @@ class WhatsApp {
 }
 
 class Email {
-    constructor() {
-        this.email = Core.config.comunicacao.Email.email;
-        this.nome = Core.config.comunicacao.Email.nome;
+    constructor(config = Core.config.comunicacao.Email) {
+        this.email = config.email;
+        this.nome = config.nome;
         this.transporter = nodemailer.createTransport({
-            host: Core.config.comunicacao.Email.host,
-            port: Core.config.comunicacao.Email.porta,
+            host: config.host,
+            port: config.porta,
             secure: true,
-            auth: {user: this.email, pass: Core.config.comunicacao.Email.senha}
+            auth: {user: this.email, pass: config.senha}
         });
     }
 

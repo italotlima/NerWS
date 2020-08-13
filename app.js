@@ -5,7 +5,6 @@ const {createServer} = require('http');
 
 /***********************************/
 Core.controller = Core.helper.carregar("controllers");
-Core.services = Core.helper.carregar("services");
 Core.assets = Core.helper.carregar("assets", false);
 Core.helper.carregar("modules");
 /***********************************/
