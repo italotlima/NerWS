@@ -27,18 +27,23 @@ exports.getParametros = url => {
     return requisicao;
 };
 
-exports.getBodyRequisicao = requisicao => new Promise((resolve, reject) => {
-    let body = "";
-    if (requisicao.method === "POST") {
-        requisicao.on('data', chunk => body += chunk.toString());
-        requisicao.on('end', () => {
-            try {
-                resolve(JSON.parse(body));
-            } catch (e) {
-                "Não foi possível converter JSON".GravarLog("warning");
-                reject(e);
-            }
-        });
-    } else
-        resolve({});
-});
+exports.getBodyRequisicao = requisicao => {
+    return new Promise((resolve, reject) => {
+        let body = "";
+        if (requisicao.method === "POST") {
+            requisicao.on('data', chunk => {
+                body += chunk.toString();
+            });
+            requisicao.on('end', () => {
+                try {
+                    body = JSON.parse(body);
+                } catch (e) {
+                    "Não foi possível converter JSON".GravarLog("warning");
+                    resolve(body);
+                    // reject(e);
+                }
+                resolve(body);
+            });
+        } else resolve(body);
+    });
+};
