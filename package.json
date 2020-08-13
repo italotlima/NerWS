@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
+    "predev": "SET NODE_ENV=developing",
     "dev": "nodemon app.js --ignore __tests__",
     "pretest": "SET NODE_ENV=test sequelize db:migrate",
     "test": "jest",
@@ -13,6 +14,8 @@
   "author": "Nervu Sistema",
   "license": "MIT",
   "devDependencies": {
+    "eslint": "^7.6.0",
+    "eslint-config-google": "^0.14.0",
     "jtest": "0.0.1",
     "nodemon": "^2.0.4",
     "sequelize-cli": "^6.2.0",
